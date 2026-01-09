@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
 import { useTimeTracker } from '../hooks/useTimeTracker';
 import { TrackedItemCard } from './TrackedItemCard';
+import { LiveClock } from './LiveClock';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent } from './ui/card';
 import { Clock, Archive, List, Download } from 'lucide-react';
 import { downloadExport } from '../lib/database';
 
@@ -60,20 +61,12 @@ export function TimeTracker() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background border-b">
-        <div className="container max-w-2xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-4">
+        <div className="container max-w-2xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Clock className="w-6 h-6" />
-              <h1 className="text-2xl font-bold">Time Tracker</h1>
+              <Clock className="w-5 h-5" />
+              <h1 className="text-xl font-bold">Time Tracker</h1>
             </div>
-            <Button
-              onClick={handleExport}
-              variant="outline"
-              size="sm"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Export
-            </Button>
           </div>
 
           {/* View switcher */}
@@ -81,17 +74,19 @@ export function TimeTracker() {
             <Button
               onClick={() => actions.switchView('main')}
               variant={state.currentView === 'main' ? 'default' : 'outline'}
+              size="sm"
               className="flex-1"
             >
-              <List className="w-4 h-4 mr-2" />
+              <List className="w-4 h-4 mr-1" />
               Active
             </Button>
             <Button
               onClick={() => actions.switchView('archive')}
               variant={state.currentView === 'archive' ? 'default' : 'outline'}
+              size="sm"
               className="flex-1"
             >
-              <Archive className="w-4 h-4 mr-2" />
+              <Archive className="w-4 h-4 mr-1" />
               Archive
             </Button>
           </div>
@@ -99,18 +94,19 @@ export function TimeTracker() {
       </header>
 
       {/* Main content */}
-      <main className="container max-w-2xl mx-auto px-4 py-6">
+      <main className="container max-w-2xl mx-auto px-4 py-4">
+        {/* Live Clock Card */}
+        <Card className="mb-4">
+          <CardContent className="py-2">
+            <LiveClock />
+          </CardContent>
+        </Card>
+
         {/* Input form (only show in main view) */}
         {state.currentView === 'main' && (
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle>Start Tracking</CardTitle>
-              <CardDescription>
-                Enter a description of what you want to track (1-140 characters)
-              </CardDescription>
-            </CardHeader>
+          <Card className="mb-4">
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-2">
                 <Input
                   ref={inputRef}
                   id="item-input"
@@ -131,7 +127,7 @@ export function TimeTracker() {
                   <span className="text-sm text-muted-foreground">
                     {inputValue.length}/140
                   </span>
-                  <Button type="submit" disabled={inputValue.trim().length === 0}>
+                  <Button type="submit" size="sm" disabled={inputValue.trim().length === 0}>
                     Start Timer
                   </Button>
                 </div>
@@ -141,7 +137,7 @@ export function TimeTracker() {
         )}
 
         {/* Items list */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           {state.items.length === 0 ? (
             <Card>
               <CardContent className="py-12 text-center">
@@ -169,8 +165,17 @@ export function TimeTracker() {
       </main>
 
       {/* Footer */}
-      <footer className="container max-w-2xl mx-auto px-4 py-8 text-center text-sm text-muted-foreground">
-        <p>All data is stored locally in your browser</p>
+      <footer className="container max-w-2xl mx-auto px-4 py-4 text-center">
+        <Button
+          onClick={handleExport}
+          variant="ghost"
+          size="sm"
+          className="text-muted-foreground"
+        >
+          <Download className="w-4 h-4 mr-1" />
+          Export
+        </Button>
+        <p className="text-xs text-muted-foreground mt-2">All data is stored locally in your browser</p>
       </footer>
     </div>
   );
