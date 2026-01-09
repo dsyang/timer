@@ -5,8 +5,8 @@ import { LiveClock } from './LiveClock';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card, CardContent } from './ui/card';
-import { Clock, Archive, List, Download } from 'lucide-react';
-import { downloadExport } from '../lib/database';
+import { Clock, Archive, List, Download, Database } from 'lucide-react';
+import { downloadExport, downloadDatabaseFile } from '../lib/database';
 
 export function TimeTracker() {
   const { state, actions } = useTimeTracker();
@@ -43,6 +43,14 @@ export function TimeTracker() {
       downloadExport();
     } catch (err) {
       console.error('Failed to export data:', err);
+    }
+  };
+
+  const handleExportDatabase = () => {
+    try {
+      downloadDatabaseFile();
+    } catch (err) {
+      console.error('Failed to export database:', err);
     }
   };
 
@@ -167,15 +175,22 @@ export function TimeTracker() {
       {/* Footer */}
       <footer className="px-4 py-4 text-center">
         <p className="text-xs text-muted-foreground">All data is stored locally in your browser</p>
-        <Button
-          onClick={handleExport}
-          variant="ghost"
-          size="sm"
-          className="text-muted-foreground mt-2"
-        >
-          <Download className="w-4 h-4 mr-1" />
-          Export
-        </Button>
+        <div className="flex justify-center gap-3 mt-2">
+          <button
+            onClick={handleExport}
+            className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Download className="w-3 h-3 mr-1" />
+            JSON
+          </button>
+          <button
+            onClick={handleExportDatabase}
+            className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Database className="w-3 h-3 mr-1" />
+            SQLite
+          </button>
+        </div>
       </footer>
     </div>
   );

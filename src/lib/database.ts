@@ -445,3 +445,24 @@ export function downloadExport(): void {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+/**
+ * Export database as SQLite file
+ */
+export function downloadDatabaseFile(): void {
+  if (!db) {
+    throw new Error('Database not initialized');
+  }
+
+  const data = db.export();
+  const timestamp = getCurrentUnixEpoch();
+  const filename = `time-tracker-${timestamp}.sqlite`;
+
+  const blob = new Blob([data], { type: 'application/x-sqlite3' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
