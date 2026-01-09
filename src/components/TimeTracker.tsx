@@ -58,10 +58,10 @@ export function TimeTracker() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background w-full" style={{ width: '-webkit-fill-available' }}>
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background border-b">
-        <div className="container max-w-2xl mx-auto px-4 py-3">
+        <div className="px-4 py-3">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5" />
@@ -94,7 +94,7 @@ export function TimeTracker() {
       </header>
 
       {/* Main content */}
-      <main className="container max-w-2xl mx-auto px-4 py-4">
+      <main className="px-4 py-4">
         {/* Live Clock Card */}
         <Card className="mb-4">
           <CardContent className="py-2">
@@ -165,17 +165,17 @@ export function TimeTracker() {
       </main>
 
       {/* Footer */}
-      <footer className="container max-w-2xl mx-auto px-4 py-4 text-center">
+      <footer className="px-4 py-4 text-center">
+        <p className="text-xs text-muted-foreground">All data is stored locally in your browser</p>
         <Button
           onClick={handleExport}
           variant="ghost"
           size="sm"
-          className="text-muted-foreground"
+          className="text-muted-foreground mt-2"
         >
           <Download className="w-4 h-4 mr-1" />
           Export
         </Button>
-        <p className="text-xs text-muted-foreground mt-2">All data is stored locally in your browser</p>
       </footer>
     </div>
   );

@@ -68,7 +68,7 @@ export const TrackedItemCard = memo(({
           <h3 className="text-lg font-medium break-words">{item.name}</h3>
 
           {/* Elapsed time */}
-          <div className="flex items-center gap-2">
+          <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">Elapsed:</span>
             <span className="text-2xl font-mono font-bold tabular-nums">
               {elapsedTime}
