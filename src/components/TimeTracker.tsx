@@ -127,6 +127,7 @@ export function TimeTracker() {
                   }}
                   maxLength={140}
                   className="w-full"
+                  autoFocus
                 />
                 {error && (
                   <p className="text-sm text-destructive">{error}</p>
