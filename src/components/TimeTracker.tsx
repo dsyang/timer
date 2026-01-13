@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTimeTracker } from '../hooks/useTimeTracker';
 import { TrackedItemCard } from './TrackedItemCard';
 import { LiveClock } from './LiveClock';
@@ -13,6 +13,21 @@ export function TimeTracker() {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-focus input on mount and when switching to main view (including mobile keyboard)
+  useEffect(() => {
+    if (state.currentView === 'main' && !state.isLoading) {
+      // Small delay to ensure DOM is ready, then focus with click to trigger mobile keyboard
+      const timer = setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          // Trigger click to ensure mobile keyboard appears
+          inputRef.current.click();
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [state.currentView, state.isLoading]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,6 +134,7 @@ export function TimeTracker() {
                   ref={inputRef}
                   id="item-input"
                   type="text"
+                  inputMode="text"
                   placeholder="What are you working on?"
                   value={inputValue}
                   onChange={(e) => {
@@ -127,7 +143,6 @@ export function TimeTracker() {
                   }}
                   maxLength={140}
                   className="w-full"
-                  autoFocus
                 />
                 {error && (
                   <p className="text-sm text-destructive">{error}</p>
